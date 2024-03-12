@@ -1,0 +1,52 @@
+.title
+{
+    height:100vh;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:#0c2d57;
+    
+}
+#title
+{
+    text-decoration: none;
+    animation: test 4s infinite ease-in-out;
+    color: white;
+}
+.title-head
+{
+    font-size:10vw;
+    font-weight: bolder;
+    color: white;
+}
+#product
+{
+    font-size: 5vw;
+    font-weight: bolder;
+}
+.products
+{
+    text-align: center;
+    background: url("../assets/leaves.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: black;
+    background-attachment: fixed;
+}
+@keyframes test
+{
+    0%,100%
+    {
+        color:white;
+    }
+    50%,75%
+    {
+        color:#FC6736;
+    }
+}
+.images
+{
+    height:500px;
+}
