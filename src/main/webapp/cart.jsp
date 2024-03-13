@@ -26,7 +26,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="style.css">
 
 </head>
@@ -61,7 +61,6 @@
                     int item_total=0;
                     try
                     {
-
                         while(rs.next())
                         {
                             String url_add="/Shopping-Cart/cart/?value="+rs.getString("oid")+"&operation=add";
