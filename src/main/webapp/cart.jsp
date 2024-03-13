@@ -1,19 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="main.conn.JDBCConn" %>
   <%!
      Connection conn = null;
      Statement stmt = null;
      ResultSet rs = null;
-
      String user = "root";
   %>
   <%
    try
    {
-       Class.forName("com.mysql.jdbc.Driver");
-       conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/shopping","root","2003");
+       JDBCConn jdbcConn = new JDBCConn();
+       Connection conn = jdbcConn.getConn();
        stmt=conn.createStatement();
-       String query="select * from cart;";
+       String query="select * from cart;";  // ------------------------Kartikey insert cart id condition in query by session-------------------------------------
        rs=stmt.executeQuery(query);
    }
    catch (SQLException e)
@@ -63,33 +63,33 @@
                     {
                         while(rs.next())
                         {
-                            String url_add="/Shopping-Cart/cart/?value="+rs.getString("oid")+"&operation=add";
-                            String url_del="/Shopping-Cart/cart/?value="+rs.getString("oid")+"&operation=min";
+                            String url_add="/ShoppingCart/cart/?value="+rs.getString("ProductId")+"&operation=add";
+                            String url_del="/ShoppingCart/cart/?value="+rs.getString("ProductId")+"&operation=min";
                 %>
                             <tr>
-                                <th class="f-size" scope="row"><%=rs.getString("oid")%></th>
+                                <th class="f-size" scope="row"><%=rs.getString("ProductId")%></th>
                                     <td class="f-size">
-                                        <b><%=rs.getString("pname")%></b>
+                                        <b><%=rs.getString("Name")%></b>
                                     </td>
                                     <td class="f-size">
-                                       <b><%=rs.getInt("pprice")%></b>
+                                       <b><%=rs.getInt("Price")%></b>
                                     </td>
                                     <td>
                                     <a style='text-decoration:none;' href=<%= url_add %> >
-                                        <button class="btn btn-primary">+</button>&nbsp
+                                        <button class="btn btn-primary"><b>+</b></button>&nbsp
                                     </a>
-                                       <b class='f-size'><%=rs.getInt("pquantity")%></b>&nbsp
+                                       <b class='f-size'><%=rs.getInt("Quantity")%></b>&nbsp
                                     <a style='text-decoration:none;' href=<%= url_del %>>
-                                        <button class="btn btn-danger">-</button>
+                                        <button class="btn btn-danger"><b>-</b></button>
                                     </a>
                                     </td>
                                     <td class="f-size">
-                                        <b><%=rs.getInt("pquantity")*rs.getInt("pprice")%></b>
+                                        <b><%=rs.getInt("Quantity")*rs.getInt("Price")%></b>
                                     </td>
                             </tr>
                 <%
-                        item_count+=rs.getInt("pquantity");
-                        item_total+=rs.getInt("pquantity")*rs.getInt("pprice");
+                        item_count+=rs.getInt("Quantity");
+                        item_total+=rs.getInt("Quantity")*rs.getInt("Price");
                         }
                     }
                     catch (SQLException e)
