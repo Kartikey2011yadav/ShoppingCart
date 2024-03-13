@@ -8,6 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 @WebServlet("/login-main")
@@ -18,19 +22,35 @@ public class Login extends HttpServlet {
         String pass = req.getParameter("password");
         System.out.println(usr+" "+pass);
 
-        PrintWriter out =  resp.getWriter();
+        try {
+            Connection conn = JDBCConn.getConn();
+            Statement stat = conn.createStatement();
+            PrintWriter out =  resp.getWriter();
 
-        if(usr.equals("admin") && pass.equals("1234")){
-            resp.setStatus(resp.SC_ACCEPTED);
-            resp.setHeader("Location", "/ShoppingCart/");
-            resp.sendRedirect("/ShoppingCart/");
-            return;
-        }
-        else {
-            out.println("<script type='text/javascript'>");
-            out.println("window.alert('password or user is incorrect');");
-            out.println("location='Login.html';");
-            out.println("</script>");
+            ResultSet res = stat.executeQuery("Select Pass from user where UsrName = '"+usr+"';");
+            if(!res.isBeforeFirst() && res.getRow() == 0){
+                out.println("<script type='text/javascript'>");
+                out.println("window.alert('user or password is incorrect');");
+                out.println("location='login.html';");
+                out.println("</script>");
+            }
+            else{
+                while (res.next()){
+                    if(pass.equals(res.getString("Pass"))){
+                        resp.setStatus(resp.SC_ACCEPTED);
+                        resp.setHeader("Location", "/ShoppingCart/");
+                        resp.sendRedirect("/ShoppingCart/");
+                    }
+                }
+                out.println("<script type='text/javascript'>");
+                out.println("window.alert('Entered password is incorrect');");
+                out.println("location='login.html';");
+                out.println("</script>");
+            }
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
     }
