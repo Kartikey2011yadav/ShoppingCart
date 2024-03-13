@@ -25,7 +25,6 @@ public class CreateAccount extends HttpServlet {
         PrintWriter out =  resp.getWriter();
 
         if(pass.equals(confPass)){
-            System.out.println("if");
             try {
                 Connection conn = JDBCConn.getConn();
                 Statement stat = conn.createStatement();
@@ -43,13 +42,11 @@ public class CreateAccount extends HttpServlet {
             return;
         }
         else {
-            System.out.println("else");
             out.println("<script type='text/javascript'>");
             out.println("window.alert('password and confirm password does not match up');");
             out.println("location='createAccount.html';");
             out.println("</script>");
         }
-        System.out.println("exit");
 
     }
     @Override
