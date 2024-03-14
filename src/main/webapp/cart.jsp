@@ -119,8 +119,12 @@
            </div>
 
            <div class="d-grid gap-3 col-8 mx-auto">
-               <button class="btn btn-warning" type="button">Proceed To Checkout</button>
-               <button class="btn btn-danger" type="button">Clear Cart</button>
+                <a class="d-grid gap-3 col-10 mx-auto" style="text-decoration:none;" href="/ShoppingCart/checkout/">
+                    <button class="btn btn-warning" type="button">Proceed To Checkout</button>
+                </a>
+                <a class="d-grid gap-3 col-10 mx-auto" style="text-decoration:none;" href="/ShoppingCart/clear/">
+                    <button class="btn btn-danger" type="button">Clear Cart</button>
+               </a>
            </div>
            </div>
        </td>
