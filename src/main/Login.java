@@ -29,7 +29,7 @@ public class Login extends HttpServlet {
             Statement stat = conn.createStatement();
             PrintWriter out =  resp.getWriter();
 
-            ResultSet res = stat.executeQuery("Select Pass from user where UsrName = '"+usr+"';");
+            ResultSet res = stat.executeQuery("Select Pass, UserId from user where UsrName = '"+usr+"';");
 
             if(!res.isBeforeFirst() && res.getRow() == 0){
                 System.out.println("Login Fail");
@@ -46,8 +46,9 @@ public class Login extends HttpServlet {
 
                         HttpSession session=req.getSession();
                         session.setAttribute("uname",usr);
+                        session.setAttribute("uId",res.getInt("UserId"));
 
-                        System.out.println(session.getAttribute("uname"));
+                        System.out.println(session.getAttribute("uname")+" "+session.getAttribute("uId"));
 
                         out.println("<script type='text/javascript'>");
                         out.println("window.alert('Login Successful');");

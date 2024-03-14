@@ -24,6 +24,7 @@ public class cart extends HttpServlet
             int count = Integer.parseInt(req.getParameter("value"));
             String operation=req.getParameter("operation");
             HttpSession session=req.getSession();
+
             Connection conn = JDBCConn.getConn();
             Statement stmt=conn.createStatement();
             if(Objects.equals(operation, "add"))
