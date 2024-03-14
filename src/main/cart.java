@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import main.conn.JDBCConn;
 
 import java.io.IOException;
@@ -20,19 +21,21 @@ public class cart extends HttpServlet
     {
         try
         {
-            String oid=req.getParameter("value");
+            int count = Integer.parseInt(req.getParameter("value"));
             String operation=req.getParameter("operation");
-            JDBCConn jdbcConn = new JDBCConn();
-            Connection conn = jdbcConn.getConn();
+            HttpSession session=req.getSession();
+            Connection conn = JDBCConn.getConn();
             Statement stmt=conn.createStatement();
             if(Objects.equals(operation, "add"))
             {
-                String query="update cart set Quantity=Quantity+1 where ProductId='"+oid+"';"; //------------------------Kartikey insert cart id condition in query by session-------------------------------------
+                count +=1;
+                String query="update cart set Quantity="+count+" where CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
                 stmt.executeUpdate(query);
             }
             else if (Objects.equals(operation, "min"))
             {
-                String query="update cart set Quantity=Quantity-1 where ProductId='"+oid+"';";  //------------------------Kartikey insert cart id condition in query by session-------------------------------------
+                count -=1;
+                String query="update cart set Quantity="+count+" where CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
                 stmt.executeUpdate(query);
                 query="delete from cart where Quantity=0;";
                 stmt.executeUpdate(query);

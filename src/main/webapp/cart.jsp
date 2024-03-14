@@ -10,8 +10,7 @@
   <%
    try
    {
-       JDBCConn jdbcConn = new JDBCConn();
-       Connection conn = jdbcConn.getConn();
+       Connection conn = JDBCConn.getConn();
        stmt=conn.createStatement();
        System.out.println(session.getAttribute("uname"));
        String query="select * from cart where CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
@@ -68,8 +67,8 @@
                     {
                         while(rs.next())
                         {
-                            String url_add="/ShoppingCart/cart/?value="+rs.getString("ProductId")+"&operation=add";
-                            String url_del="/ShoppingCart/cart/?value="+rs.getString("ProductId")+"&operation=min";
+                            String url_add="/ShoppingCart/cart/?value="+rs.getInt("Quantity")+"&operation=add";
+                            String url_del="/ShoppingCart/cart/?value="+rs.getInt("Quantity")+"&operation=min";
                 %>
                             <tr>
                                 <th class="f-size" scope="row"><%=rs.getString("ProductId")%></th>
