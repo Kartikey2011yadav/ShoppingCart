@@ -36,9 +36,10 @@ public class CreateAccount extends HttpServlet {
                 throw new RuntimeException(e);
             }
 
-            resp.setStatus(resp.SC_ACCEPTED);
-            resp.setHeader("Location", "/ShoppingCart/");
-            resp.sendRedirect("/ShoppingCart/");
+            out.println("<script type='text/javascript'>");
+            out.println("window.alert('Registration successful');");
+            out.println("location='login.html';");
+            out.println("</script>");
             return;
         }
         else {
