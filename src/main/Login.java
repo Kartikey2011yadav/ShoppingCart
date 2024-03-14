@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import main.conn.JDBCConn;
 
 import java.io.IOException;
@@ -38,6 +39,9 @@ public class Login extends HttpServlet {
             else{
                 while (res.next()){
                     if(pass.equals(res.getString("Pass"))){
+                        HttpSession session=req.getSession();
+                        session.setAttribute("uname",usr);
+                        System.out.println(session.getAttribute("uname"));
                         resp.setStatus(resp.SC_ACCEPTED);
                         resp.setHeader("Location", "/ShoppingCart/");
                         resp.sendRedirect("/ShoppingCart/");

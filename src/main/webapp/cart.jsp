@@ -13,8 +13,13 @@
        JDBCConn jdbcConn = new JDBCConn();
        Connection conn = jdbcConn.getConn();
        stmt=conn.createStatement();
-       String query="select * from cart;";  // ------------------------Kartikey insert cart id condition in query by session-------------------------------------
+       System.out.println(session.getAttribute("uname"));
+       String query="select * from cart where CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
        rs=stmt.executeQuery(query);
+       if(!rs.isBeforeFirst() && rs.getRow() == 0){
+
+            System.out.println("Empty Result Set \n "+query);
+       }
    }
    catch (SQLException e)
    {
