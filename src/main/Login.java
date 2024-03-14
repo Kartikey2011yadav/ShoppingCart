@@ -56,7 +56,6 @@ public class Login extends HttpServlet {
                         out.println("</script>");
                     }
                 }
-                System.out.println("Login Fail");
 
                 out.println("<script type='text/javascript'>");
                 out.println("window.alert('Entered password is incorrect');");

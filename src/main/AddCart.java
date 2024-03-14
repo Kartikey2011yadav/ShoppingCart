@@ -17,30 +17,44 @@ import java.sql.Statement;
 
 @WebServlet("/add-cart/")
 public class AddCart extends HttpServlet {
+
+    String quantity ="";
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session=req.getSession();
 
         String product = req.getParameter("prod");
-        String quantity = req.getParameter("Quantity");
-        String UsrId = (String)session.getAttribute("uId");
+        int UsrId = (int)session.getAttribute("uId");
         String cartId = "";
+        int price =0;
+        String pId = "";
+
         PrintWriter out =  resp.getWriter();
 
-        if(UsrId != null){
+        if( session.getAttribute("uId") != null){
             try {
                 Connection conn = JDBCConn.getConn();
                 Statement stat = conn.createStatement();
+                System.out.println(quantity + " "+product+" "+UsrId);
                 ResultSet rs = stat.executeQuery("select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"';");
 
                 while (rs.next()){
                     cartId = rs.getString("CartId");
                 }
 
-                stat.executeUpdate("insert into cart (CartId,Name,Price,ProductId,Quantity) values('')");
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (SQLException e) {
+                rs = stat.executeQuery("select * from product where Name = '"+product+"';");
+
+                while (rs.next()){
+                    pId = rs.getString("ProductId");
+                    price = rs.getInt("Price");
+                }
+
+                stat.executeUpdate("insert into cart (CartId,Name,Price,ProductId,Quantity) values('"+cartId+"','"+product+"',"+price+",'"+pId+"',"+quantity+")");
+
+                resp.setStatus(resp.SC_ACCEPTED);
+                resp.setHeader("Location", "/ShoppingCart/cart.jsp");
+                resp.sendRedirect("/ShoppingCart/cart.jsp");
+            } catch (ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);
             }
 
@@ -81,6 +95,8 @@ public class AddCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        System.out.println(request.getParameter("Quantity"));
+        quantity = request.getParameter("Quantity");
         doGet(request, response);
     }
 }
