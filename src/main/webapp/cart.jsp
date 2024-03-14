@@ -8,16 +8,21 @@
      String user = "root";
   %>
   <%
+
+  if((String)session.getAttribute("uname") == null)
+  {
+        response.sendRedirect("/ShoppingCart/login.html");
+        System.out.println("invalid attempt");
+  }
    try
    {
        Connection conn = JDBCConn.getConn();
        stmt=conn.createStatement();
-       System.out.println(session.getAttribute("uname"));
        String query="select * from cart where CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
        rs=stmt.executeQuery(query);
        if(!rs.isBeforeFirst() && rs.getRow() == 0){
 
-            System.out.println("Empty Result Set \n "+query);
+            System.out.println("Empty Result Set");
        }
    }
    catch (SQLException e)

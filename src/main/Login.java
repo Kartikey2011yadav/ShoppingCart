@@ -22,7 +22,7 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String usr = req.getParameter("user");
         String pass = req.getParameter("password");
-        System.out.println(usr+" "+pass);
+        System.out.println("Attempt to login....");
 
         try {
             Connection conn = JDBCConn.getConn();
@@ -30,7 +30,10 @@ public class Login extends HttpServlet {
             PrintWriter out =  resp.getWriter();
 
             ResultSet res = stat.executeQuery("Select Pass from user where UsrName = '"+usr+"';");
+
             if(!res.isBeforeFirst() && res.getRow() == 0){
+                System.out.println("Login Fail");
+
                 out.println("<script type='text/javascript'>");
                 out.println("window.alert('user or password is incorrect');");
                 out.println("location='login.html';");
@@ -39,14 +42,21 @@ public class Login extends HttpServlet {
             else{
                 while (res.next()){
                     if(pass.equals(res.getString("Pass"))){
+                        System.out.println("Login Successful");
+
                         HttpSession session=req.getSession();
                         session.setAttribute("uname",usr);
+
                         System.out.println(session.getAttribute("uname"));
-                        resp.setStatus(resp.SC_ACCEPTED);
-                        resp.setHeader("Location", "/ShoppingCart/");
-                        resp.sendRedirect("/ShoppingCart/");
+
+                        out.println("<script type='text/javascript'>");
+                        out.println("window.alert('Login Successful');");
+                        out.println("location='index.html';");
+                        out.println("</script>");
                     }
                 }
+                System.out.println("Login Fail");
+
                 out.println("<script type='text/javascript'>");
                 out.println("window.alert('Entered password is incorrect');");
                 out.println("location='login.html';");
