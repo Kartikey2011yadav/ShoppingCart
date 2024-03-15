@@ -18,20 +18,21 @@ import java.sql.Statement;
 @WebServlet("/add-cart/")
 public class AddCart extends HttpServlet {
 
-    String quantity ="";
+    int quantity =0;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session=req.getSession();
 
-        String product = req.getParameter("prod");
-        int UsrId = (int)session.getAttribute("uId");
-        String cartId = "";
-        int price =0;
-        String pId = "";
 
-        PrintWriter out =  resp.getWriter();
 
         if( session.getAttribute("uId") != null){
+            String product = req.getParameter("prod");
+            int UsrId = (int)session.getAttribute("uId");
+            String cartId = "";
+            int price =0;
+            String pId = "";
+
+            PrintWriter out =  resp.getWriter();
             try {
                 Connection conn = JDBCConn.getConn();
                 Statement stat = conn.createStatement();
@@ -49,7 +50,18 @@ public class AddCart extends HttpServlet {
                     price = rs.getInt("Price");
                 }
 
-                stat.executeUpdate("insert into cart (CartId,Name,Price,ProductId,Quantity) values('"+cartId+"','"+product+"',"+price+",'"+pId+"',"+quantity+")");
+                rs = stat.executeQuery("select CartId, Quantity from cart where ProductId = '"+pId+"';");
+                if(rs.isBeforeFirst()){
+                    while (rs.next()){
+                        quantity += rs.getInt("Quantity");
+                        cartId = rs.getString("CartId");
+                    }
+                    stat.executeUpdate("update cart set Quantity="+quantity+" where ProductId = '"+pId+"' and CartId ='"+cartId+"' ;");
+                }
+                else{
+                    stat.executeUpdate("insert into cart (CartId,Name,Price,ProductId,Quantity) values('"+cartId+"','"+product+"',"+price+",'"+pId+"',"+quantity+")");
+                }
+
 
                 resp.setStatus(resp.SC_ACCEPTED);
                 resp.setHeader("Location", "/ShoppingCart/cart.jsp");
@@ -65,30 +77,6 @@ public class AddCart extends HttpServlet {
             resp.sendRedirect("/ShoppingCart/login.html");
         }
 
-//        if(pass.equals(confPass)){
-//            try {
-//                Connection conn = JDBCConn.getConn();
-//                Statement stat = conn.createStatement();
-//
-//                String cId = "cart"+((int) (Math.random() * 100))+usr.substring(0,2);
-//                stat.executeUpdate("INSERT INTO user(CartId, UsrName, Pass) VALUES('"+cId+"','"+usr+"','"+pass+"')");
-//
-//            } catch (ClassNotFoundException | SQLException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//            out.println("<script type='text/javascript'>");
-//            out.println("window.alert('Registration successful');");
-//            out.println("location='login.html';");
-//            out.println("</script>");
-//            return;
-//        }
-//        else {
-//            out.println("<script type='text/javascript'>");
-//            out.println("window.alert('password and confirm password does not match up');");
-//            out.println("location='createAccount.html';");
-//            out.println("</script>");
-//        }
 
     }
 
@@ -96,7 +84,7 @@ public class AddCart extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         System.out.println(request.getParameter("Quantity"));
-        quantity = request.getParameter("Quantity");
+        quantity = Integer.parseInt(request.getParameter("Quantity"));
         doGet(request, response);
     }
 }
