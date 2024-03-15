@@ -72,8 +72,8 @@
                     {
                         while(rs.next())
                         {
-                            String url_add="/ShoppingCart/cart/?value="+rs.getInt("Quantity")+"&operation=add";
-                            String url_del="/ShoppingCart/cart/?value="+rs.getInt("Quantity")+"&operation=min";
+                            String url_add="/ShoppingCart/cart/?value="+rs.getInt("Quantity")+"&operation=add&"+"prod="+rs.getString("Name");
+                            String url_del="/ShoppingCart/cart/?value="+rs.getInt("Quantity")+"&operation=min&"+"prod="+rs.getString("Name");
                 %>
                             <tr>
                                 <th class="f-size" scope="row"><%=rs.getString("ProductId")%></th>

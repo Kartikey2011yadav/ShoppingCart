@@ -22,21 +22,30 @@ public class cart extends HttpServlet
         try
         {
             int count = Integer.parseInt(req.getParameter("value"));
+            String product = req.getParameter("prod");
             String operation=req.getParameter("operation");
             HttpSession session=req.getSession();
 
             Connection conn = JDBCConn.getConn();
+
             Statement stmt=conn.createStatement();
+
+            ResultSet res= stmt.executeQuery("select * from product where Name = '"+product+"';");
+            String pId ="";
+            while (res.next()){
+                pId = res.getString("ProductId");
+            }
+
             if(Objects.equals(operation, "add"))
             {
                 count +=1;
-                String query="update cart set Quantity="+count+" where CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
+                String query="update cart set Quantity="+count+" where ProductId = '"+pId+"' and CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
                 stmt.executeUpdate(query);
             }
             else if (Objects.equals(operation, "min"))
             {
                 count -=1;
-                String query="update cart set Quantity="+count+" where CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
+                String query="update cart set Quantity="+count+" where ProductId = '"+pId+"' and CartId = (select CartId from user where UsrName = '"+(String)session.getAttribute("uname")+"');";
                 stmt.executeUpdate(query);
                 query="delete from cart where Quantity=0;";
                 stmt.executeUpdate(query);
