@@ -36,8 +36,6 @@ public class Login extends HttpServlet {
 
                 out.println("<script type='text/javascript'>");
                 out.println("window.alert('user or password is incorrect');");
-                out.println("location='login.html';");
-                out.println("</script>");
             }
             else{
                 while (res.next()){
@@ -59,9 +57,9 @@ public class Login extends HttpServlet {
 
                 out.println("<script type='text/javascript'>");
                 out.println("window.alert('Entered password is incorrect');");
-                out.println("location='login.html';");
-                out.println("</script>");
             }
+            out.println("location='login.html';");
+            out.println("</script>");
 
 
         } catch (SQLException | ClassNotFoundException e) {
