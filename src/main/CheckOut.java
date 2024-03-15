@@ -18,10 +18,9 @@ public class CheckOut extends HttpServlet
 {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JDBCConn jdbcConn=new JDBCConn();
         try
         {
-            Connection conn=jdbcConn.getConn();
+            Connection conn= JDBCConn.getConn();
             Statement statement= conn.createStatement();
             String query="insert into order(OrderId,ProductId,Name,Price,Quantity,UserId) select "; //------------Session Kartikey User ID
             statement.executeUpdate(query);
