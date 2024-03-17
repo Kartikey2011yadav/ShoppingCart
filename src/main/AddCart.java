@@ -17,16 +17,13 @@ import java.sql.Statement;
 
 @WebServlet("/add-cart/")
 public class AddCart extends HttpServlet {
-
-    int quantity =0;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session=req.getSession();
 
-
-
         if( session.getAttribute("uId") != null){
             String product = req.getParameter("prod");
+            int quantity = Integer.parseInt(req.getParameter("Quantity"));
             int UsrId = (int)session.getAttribute("uId");
             String cartId = "";
             int price =0;
@@ -83,8 +80,6 @@ public class AddCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        System.out.println(request.getParameter("Quantity"));
-        quantity = Integer.parseInt(request.getParameter("Quantity"));
         doGet(request, response);
     }
 }
