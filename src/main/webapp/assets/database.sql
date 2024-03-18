@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `Quantity` int NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `order` (
+CREATE TABLE IF NOT EXISTS `order_list` (
   `OrderId` varchar(10) NOT NULL,
   `ProductId` varchar(10) NOT NULL,
   `Name` varchar(30) NOT NULL,
