@@ -45,16 +45,12 @@ public class CheckOut extends HttpServlet
             }
             String query_delete="delete from cart where CartId=(select CartId from user where UserId="+session.getAttribute("uId")+");";
             statement_delete.executeUpdate(query_delete);
-            //            alter table order_list modify OrderId varchar(14);
+            //alter table order_list modify OrderId varchar(14);
 
             resp.sendRedirect("/ShoppingCart/cart.jsp");
 
         }
-        catch (ClassNotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
-        catch (SQLException e)
+        catch (ClassNotFoundException | SQLException e)
         {
             throw new RuntimeException(e);
         }
