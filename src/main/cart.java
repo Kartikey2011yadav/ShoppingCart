@@ -7,9 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import main.conn.JDBCConn;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.*;
 import java.util.Objects;
 
