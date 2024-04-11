@@ -10,10 +10,8 @@ import jakarta.servlet.http.HttpSession;
 import main.conn.JDBCConn;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
 @WebServlet("/checkout/")
